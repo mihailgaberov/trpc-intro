@@ -20,7 +20,7 @@ const AppContent = () => {
 const App = () => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: "http://localhost:8990",
+      url: "http://localhost:8080",
     })
   );
 
