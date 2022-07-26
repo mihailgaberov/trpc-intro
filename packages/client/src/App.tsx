@@ -9,13 +9,16 @@ const client = new QueryClient();
 
 const AppContent = () => {
   const getMessages = trpc.useQuery(["getMessages"]);
+  const [user, setUser] = useState("");
+  const [message, setMessage] = useState("");
+
   const addMessage = trpc.useMutation(["addMessage"]);
 
   const onAdd = () => {
     addMessage.mutate(
       {
-        message: "Yo mo fo!",
-        user: "Mihail",
+        message,
+        user,
       },
       {
         onSuccess: () => {
@@ -27,7 +30,26 @@ const AppContent = () => {
 
   return (
     <div className="mt-10 text-3xl mx-auto max-w-6xl">
-      <div>{JSON.stringify(getMessages.data)}</div>
+      <div>
+        {(getMessages.data ?? []).map((row, idx) => (
+          <div key={idx}>{JSON.stringify(row)}</div>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
+        className="p-5 border-2 border-gray-300 rounded-lg w-full"
+        placeholder="User"
+      />
+
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        className="p-5 border-2 border-gray-300 rounded-lg w-full"
+        placeholder="Message"
+      />
       <button onClick={onAdd}>Add Message</button>
     </div>
   );
