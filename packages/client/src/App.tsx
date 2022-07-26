@@ -8,7 +8,7 @@ import { trpc } from "./trpc";
 const client = new QueryClient();
 
 const AppContent = () => {
-  const hello = trpc.useQuery(["hello"]);
+  const hello = trpc.useQuery(["getMessages"]);
 
   return (
     <div className="mt-10 text-3xl mx-auto max-w-6xl">
