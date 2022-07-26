@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { trpc } from "./trpc";
 
 import "./index.scss";
-import { trpc } from "./trpc";
 
 const client = new QueryClient();
 
 const AppContent = () => {
-  const hello = trpc.useQuery(["getMessages"]);
+  const getMessages = trpc.useQuery(["getMessages"]);
+  const addMessage = trpc.useMutation(["addMessage"]);
+
+  const onAdd = () => {
+    addMessage.mutate(
+      {
+        message: "Yo mo fo!",
+        user: "Mihail",
+      },
+      {
+        onSuccess: () => {
+          client.invalidateQueries(["getMessages"]);
+        },
+      }
+    );
+  };
 
   return (
     <div className="mt-10 text-3xl mx-auto max-w-6xl">
-      <div>{JSON.stringify(hello.data)}</div>
+      <div>{JSON.stringify(getMessages.data)}</div>
+      <button onClick={onAdd}>Add Message</button>
     </div>
   );
 };

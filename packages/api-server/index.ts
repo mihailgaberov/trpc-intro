@@ -26,6 +26,16 @@ const appRouter = trpc
     resolve({ input }) {
       return messages.slice(-input);
     },
+  })
+  .mutation("addMessage", {
+    input: z.object({
+      user: z.string(),
+      message: z.string(),
+    }),
+    resolve({ input }) {
+      messages.push(input);
+      return input;
+    },
   });
 
 export type AppRouter = typeof appRouter;
